@@ -1,8 +1,15 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { userService } from "../service";
-const createUser = async (req: Request, res: Response) => {
-  const user = await userService.createUser();
+import catchAsync from "../utils/catchAsync";
+
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const { email, password, name, role } = req.body;
+  const user = await userService.createUser(email, password, name, role);
   res.status(httpStatus.CREATED).send({ user, message: "Created" });
-};
-export default { createUser };
+});
+const getUsers = catchAsync(async (req: Request, res: Response) => {
+  const user = await userService.queryUser();
+  res.send(user);
+});
+export default { createUser, getUsers };
