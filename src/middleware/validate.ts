@@ -20,7 +20,7 @@ const validate =
       if (error instanceof ZodError) {
         const errorMessage = error.errors
           .map((details) => `${details.message} (${details.path.join(".")})`)
-          .join(", ");
+          .join(", "); // customize error message
 
         return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
       }
