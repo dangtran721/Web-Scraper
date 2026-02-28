@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { z } from "zod";
 import path from "path";
-import { access } from "fs";
 
 // Connect this to .env:
 dotenv.config({ path: path.join(process.cwd(), ".env") });
@@ -9,8 +8,8 @@ dotenv.config({ path: path.join(process.cwd(), ".env") });
 const envSchema = z.object({
   PORT: z.string().transform(Number).default("3000"),
   JWT_SECRET: z.string().min(1),
-  JWT_ACCESS_EXPIRATION_MINUTES: z.number().default(30),
-  JWT_REFRESH_EXPIRATION_DAYS: z.number().default(30),
+  JWT_ACCESS_EXPIRATION_MINUTES: z.coerce.number().default(30),
+  JWT_REFRESH_EXPIRATION_DAYS: z.coerce.number().default(30),
 });
 // validate and turn data into usable
 const envVars = envSchema.parse(process.env);

@@ -10,4 +10,10 @@ router.post(
   authController.register,
 );
 router.post("/login", validate(authValidation.login), authController.login);
+router.post("/logout", validate(authValidation.logout), authController.logout);
+router.post(
+  "/refresh-token",
+  validate(authValidation.refreshToken),
+  authController.refreshToken,
+);
 export default router;

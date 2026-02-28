@@ -33,6 +33,7 @@ const saveToken = async (
 // To find out if the token is already exits in db or not
 const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
   const payload = await jwt.verify(token, config.jwt.secret);
+
   const userId = Number(payload.sub);
   const tokenVerified = await prisma.token.findFirst({
     where: { token, type, userId, blacklisted: false },
@@ -42,17 +43,29 @@ const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
 const generateAuthToken = async (user: {
   id: number;
 }): Promise<AuthTokensResponse> => {
-  const accessExpiresToken = dayjs().add(config.jwt.accessExpirationMinutes);
+  const accessExpiresToken = dayjs().add(
+    config.jwt.accessExpirationMinutes,
+    "minutes",
+  );
   const accessToken = generateToken(
     user.id,
     accessExpiresToken,
     TokenType.ACCESS,
   );
-  const refreshExpiresToken = dayjs().add(config.jwt.refreshExpirationDays);
+  const refreshExpiresToken = dayjs().add(
+    config.jwt.refreshExpirationDays,
+    "days",
+  );
   const refreshToken = generateToken(
     user.id,
     refreshExpiresToken,
     TokenType.REFRESH,
+  );
+  await saveToken(
+    refreshToken,
+    user.id,
+    TokenType.REFRESH,
+    refreshExpiresToken,
   );
   return {
     access: {
@@ -61,4 +74,11 @@ const generateAuthToken = async (user: {
     },
     refresh: { token: refreshToken, expires: refreshExpiresToken.toDate() },
   };
+};
+
+export default {
+  generateToken,
+  saveToken,
+  verifyToken,
+  generateAuthToken,
 };
