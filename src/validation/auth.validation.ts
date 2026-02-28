@@ -18,8 +18,15 @@ const login = z.object({
     password: z.string().min(1, "Password is required"),
   }),
 });
-
+const logout = z.object({
+  body: z.object({ refreshToken: z.string() }),
+});
+const refreshToken = z.object({
+  body: z.object({ refreshToken: z.string() }),
+});
 export default {
   register,
   login,
+  logout,
+  refreshToken,
 };

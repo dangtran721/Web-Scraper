@@ -1,4 +1,4 @@
-import { Role, User } from "@prisma/client";
+import { Prisma, Role, User } from "@prisma/client";
 import { prisma } from "../client";
 import { encryptPassword } from "../utils/encryption";
 
@@ -29,4 +29,13 @@ const getUserByEmail = async (email: string): Promise<User> => {
 
   return user;
 };
-export default { createUser, queryUser, getUserByEmail };
+const updateUserById = async (
+  userId: number,
+  updateData: Prisma.UserUpdateInput,
+) => {
+  await prisma.user.update({
+    where: { id: userId },
+    data: updateData,
+  });
+};
+export default { createUser, queryUser, getUserByEmail, updateUserById };
