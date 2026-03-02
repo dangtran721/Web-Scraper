@@ -6,10 +6,12 @@ import { ScrapingType } from "@prisma/client";
 
 const getScrape = async (
   url: string,
-  selector: string,
-  scrapingType: ScrapingType,
-  attribute?: string,
-  subSelector?: string,
+  config: {
+    selector: string;
+    scrapingType: ScrapingType;
+    attribute?: string;
+    subSelector?: string;
+  }[],
 ) => {
   try {
     const { data } = await axios.get(url, {
@@ -17,30 +19,43 @@ const getScrape = async (
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
       },
+      timeout: 5000, // for 5 secs
     });
     const $ = cheerio.load(data);
 
-    const results: string[] = [];
+    //loop:
+    const finalResults = config.map((conf) => {
+      try {
+        const results: string[] = [];
+        $(conf.selector).each((i, el) => {
+          let value: string | undefined;
+          const elToScrape = conf.subSelector
+            ? $(el).find(conf.subSelector)
+            : $(el);
+          // to flexible:
+          if (conf.scrapingType === ScrapingType.TEXT) {
+            value = elToScrape.text().trim();
+          } else {
+            value = elToScrape.attr(conf.attribute);
+          }
+          if (value) results.push(value);
+        });
 
-    $(selector).each((i, el) => {
-      let value: string | undefined;
-      const elToScrape = subSelector ? $(el).find(subSelector) : $(el);
-      // to flexible:
-      if (scrapingType === ScrapingType.TEXT) {
-        value = elToScrape.text().trim();
-      } else {
-        value = elToScrape.attr(attribute);
+        if (results.length === 0) {
+          throw new Error("No data found for this selector");
+        }
+        // to clearly
+        return { selector: conf.selector, data: results };
+      } catch (error) {
+        return {
+          selector: conf.selector,
+          error: "Scraping failed",
+        };
       }
-
-      if (value) results.push(value);
     });
-    if (results.length === 0) {
-      throw new Error();
-    }
-
-    return results;
+    return finalResults;
   } catch (err) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Invalid result");
+    throw new ApiError(httpStatus.NOT_FOUND, "Invalid result ");
   }
 };
 export default { getScrape };
