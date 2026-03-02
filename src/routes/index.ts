@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from "./user.routes";
 import authRouter from "./auth.routes";
+import scraperRouter from "./scraper.routes";
 const router = express.Router();
 const defaultRoutes = [
   {
@@ -10,6 +11,10 @@ const defaultRoutes = [
   {
     path: "/auth",
     route: authRouter,
+  },
+  {
+    path: "/scraper",
+    route: scraperRouter,
   },
 ];
 
