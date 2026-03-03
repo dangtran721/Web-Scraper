@@ -4,12 +4,17 @@ import ApiError from "../utils/apiError";
 import httpStatus from "http-status";
 import { ScrapingType } from "@prisma/client";
 import aiService from "./ai.service";
+import { aiConfig } from "../config";
 
 const getURL = async (url: string): Promise<string> => {
+  // Do math to pick up randomly
+  const randomAgent =
+    aiConfig.USER_AGENTS[
+      Math.floor(Math.random() * aiConfig.USER_AGENTS.length)
+    ];
   const { data } = await axios.get(url, {
     headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+      "User-Agent": randomAgent,
     },
     timeout: 5000, // for 5 secs
   });
@@ -36,7 +41,7 @@ const htmlValidate = async (html: string): Promise<string> => {
 const getScrape = async (
   url: string,
   config: {
-    selector?: string;
+    selector: string;
     scrapingType: ScrapingType;
     attribute?: string;
     subSelector?: string;
