@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@google/genai": "^1.43.0",
     "@prisma/client": "6.3.0",
     "axios": "^1.13.6",
     "bcrypt": "5.1.1",
