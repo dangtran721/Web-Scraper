@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-
-    "[esModuleInterop](https://www.typescriptlang.org/tsconfig/#esModuleInterop)": true,
-
+    "esModuleInterop": true,
     "target": "es6",
-
     "sourceMap": true,
-
     "skipLibCheck": true,
-
     "outDir": "dist"
   }
 }
