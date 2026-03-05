@@ -1,10 +1,10 @@
+import { ScrapingType } from "@prisma/client";
 import axios from "axios";
 import * as cheerio from "cheerio";
-import ApiError from "../utils/apiError";
 import httpStatus from "http-status";
-import { ScrapingType } from "@prisma/client";
 import aiService from "./ai.service";
-import { aiConfig } from "../config";
+import ApiError from "~/utils/apiError";
+import { aiConfig } from "~/config";
 
 const getURL = async (url: string): Promise<string> => {
   // Do math to pick up randomly

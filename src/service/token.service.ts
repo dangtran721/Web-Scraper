@@ -1,9 +1,9 @@
 import { Token, TokenType } from "@prisma/client";
 import dayjs, { Dayjs } from "dayjs";
-import jwt, { Jwt, JwtPayload } from "jsonwebtoken";
-import config from "../config/config";
-import { prisma } from "../client";
-import { AuthTokensResponse } from "../type/response";
+import config from "~/config/config";
+import jwt from "jsonwebtoken";
+import { prisma } from "~/client";
+import { AuthTokensResponse } from "~/type/response";
 const generateToken = (
   userId: number,
   expires: Dayjs,

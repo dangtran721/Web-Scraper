@@ -1,6 +1,6 @@
 import { Prisma, Role, User } from "@prisma/client";
-import { prisma } from "../client";
-import { encryptPassword } from "../utils/encryption";
+import { prisma } from "~/client";
+import { encryptPassword } from "~/utils/encryption";
 
 const createUser = async (
   email: string,
