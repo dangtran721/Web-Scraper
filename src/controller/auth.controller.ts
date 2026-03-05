@@ -6,6 +6,7 @@ import exclude from "~/utils/exclude";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const { email, password, name } = req.body;
+
   const user = await userService.createUser(email, password, name);
   const userWithOutPassword = exclude(user, [
     "createdAt",
