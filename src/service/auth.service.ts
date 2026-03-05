@@ -1,13 +1,12 @@
 import { TokenType, User } from "@prisma/client";
-import exclude from "../utils/exclude";
-import userService from "./user.service";
-import { isPasswordMatch } from "../utils/encryption";
-import { prisma } from "../client";
-import ApiError from "../utils/apiError";
-import httpStatus from "http-status";
+import { prisma } from "~/client";
+import { AuthTokensResponse } from "~/type/response";
+import ApiError from "~/utils/apiError";
+import { isPasswordMatch } from "~/utils/encryption";
+import exclude from "~/utils/exclude";
 import tokenService from "./token.service";
-import { number } from "zod";
-import { AuthTokensResponse } from "../type/response";
+import userService from "./user.service";
+
 const loginUserWithEmailAndPassword = async (
   email: string,
   password: string,

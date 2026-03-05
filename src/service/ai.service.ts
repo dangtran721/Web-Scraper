@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import config from "../config/config";
-import { aiConfig } from "../config";
+import { aiConfig } from "~/config";
+import config from "~/config/config";
 
 const ai = new GoogleGenAI({
   apiKey: config.ai.apiKey,

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { userService } from "../service";
-import catchAsync from "../utils/catchAsync";
-import { number } from "zod";
+import { userService } from "~/service";
+import catchAsync from "~/utils/catchAsync";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const { email, password, name, role } = req.body;
