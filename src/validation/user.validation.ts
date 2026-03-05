@@ -11,6 +11,18 @@ const updateUser = z.object({
     })
     .strict(), // will throw error if got input something else
 });
+const deleteUser = z.object({
+  params: z.object({
+    userId: z.string(),
+  }),
+});
+const restoreUser = z.object({
+  params: z.object({
+    userId: z.string(),
+  }),
+});
 export default {
   updateUser,
+  deleteUser,
+  restoreUser,
 };
