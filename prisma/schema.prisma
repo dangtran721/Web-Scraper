@@ -14,6 +14,8 @@ model User {
   password        String
   role            Role     @default(USER)
   isEmailVerified Boolean  @default(false)
+  isDeleted Boolean @default(false)
+  deleteAt DateTime? 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   Token           Token[]
@@ -27,7 +29,7 @@ model Token {
   expires     DateTime
   blacklisted Boolean
   createdAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId      Int
 }
 
@@ -39,7 +41,7 @@ id          Int       @id @default(autoincrement())
   type ScrapingType  @default(TEXT)
   createdAt   DateTime  @default(now())
   attribute   String? 
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId      Int
 }
 enum ScrapingType {

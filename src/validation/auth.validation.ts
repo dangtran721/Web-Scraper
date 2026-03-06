@@ -5,6 +5,7 @@ const register = z.object({
   body: z.object({
     email: z.string().trim().email("Invalid email format"),
     password: password,
+    name: z.string().trim().min(3),
   }),
 });
 

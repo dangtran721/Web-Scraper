@@ -1,14 +1,12 @@
 import { Request, Response } from "express";
-import catchAsync from "../utils/catchAsync";
 import httpStatus from "http-status";
-import userService from "../service/user.service";
-import authService from "../service/auth.service";
-import exclude from "../utils/exclude";
-import { tokenService } from "../service";
-import { TokenType } from "@prisma/client";
+import { authService, tokenService, userService } from "~/service";
+import catchAsync from "~/utils/catchAsync";
+import exclude from "~/utils/exclude";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const { email, password, name } = req.body;
+
   const user = await userService.createUser(email, password, name);
   const userWithOutPassword = exclude(user, [
     "createdAt",
