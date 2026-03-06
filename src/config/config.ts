@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { z } from "zod";
 import path from "path";
 
-// Connect this to .env:
+// Connect to .env:
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 // validate whole stuff:
 const envSchema = z.object({
@@ -11,6 +11,7 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRATION_MINUTES: z.coerce.number().default(30),
   JWT_REFRESH_EXPIRATION_DAYS: z.coerce.number().default(30),
   AI_API_KEY: z.string(),
+  USER_HARD_DELETE_DAYS: z.number().default(30),
 });
 // validate and turn data into usable
 const envVars = envSchema.parse(process.env);
@@ -24,6 +25,9 @@ const config = {
   } as const, // prevent to overwrite
   ai: {
     apiKey: envVars.AI_API_KEY,
+  },
+  user: {
+    hardDeleteDays: envVars.USER_HARD_DELETE_DAYS,
   },
 };
 // export for comfy
