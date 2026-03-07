@@ -74,12 +74,12 @@ const hardDeleteUserById = async (userId: number): Promise<User> => {
   return await prisma.user.delete({ where: { id: userId } });
 };
 
-const cleanUpDeletedUsers = async (beforeDate: Date) => {
+const cleanUpDeletedUsers = async (execDaysCountdown: Date) => {
   return await prisma.user.deleteMany({
     where: {
       isDeleted: true,
       deleteAt: {
-        lt: beforeDate,
+        lt: execDaysCountdown,
       },
     },
   });
